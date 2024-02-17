@@ -21,3 +21,70 @@ CNN::CNN()
     b4 = vector<vector<double>>(params[7][0], vector<double>(params[7][1], 0));
     initializeParameters();
 }
+
+void CNN::initializeParameters()
+{
+    srand(time(NULL));
+    double dev1 = 1 / sqrt(f1.size() * f1[0].size() * f1[0][0].size() * f1[0][0][0].size());
+    double dev2 = 1 / sqrt(f2.size() * f2[0].size() * f2[0][0].size() * f2[0][0][0].size());
+    for (int i = 0; i < f1.size(); i++)
+    {
+        for (int j = 0; j < f1[0].size(); j++)
+        {
+            for (int k = 0; k < f1[0][0].size(); k++)
+            {
+                for (int l = 0; l < f1[0][0][0].size(); l++)
+                {
+                    double f = (double)rand() / RAND_MAX;
+                    double r = f * 4 - 2;
+                    f1[i][j][k][l] = dev1 * exp(-1 * ((r * r) / 2));
+                    if (((double)rand() / (RAND_MAX)) > 0.5)
+                    {
+                        f1[i][j][k][l] *= -1;
+                    }
+                    else
+                    {
+                        f1[i][j][k][l] *= 1;
+                    }
+                }
+            }
+        }
+    }
+    for (int i = 0; i < f2.size(); i++)
+    {
+        for (int j = 0; j < f2[0].size(); j++)
+        {
+            for (int k = 0; k < f2[0][0].size(); k++)
+            {
+                for (int l = 0; l < f2[0][0][0].size(); l++)
+                {
+                    double f = (double)rand() / RAND_MAX;
+                    double r = f * 6 - 3;
+                    f2[i][j][k][l] = dev2 * exp(-1 * ((r * r) / 2));
+                    if (((double)rand() / (RAND_MAX)) > 0.5)
+                    {
+                        f2[i][j][k][l] *= -1;
+                    }
+                    else
+                    {
+                        f2[i][j][k][l] *= 1;
+                    }
+                }
+            }
+        }
+    }
+    for (int i = 0; i < w3.size(); i++)
+    {
+        for (int j = 0; j < w3[0].size(); j++)
+        {
+            w3[i][j] = randGaussian() * 0.01;
+        }
+    }
+    for (int i = 0; i < w4.size(); i++)
+    {
+        for (int j = 0; j < w4[0].size(); j++)
+        {
+            w4[i][j] = randGaussian() * 0.01;
+        }
+    }
+}
