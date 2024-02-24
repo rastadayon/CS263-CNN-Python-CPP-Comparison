@@ -1,47 +1,69 @@
 import numpy as np
 from idx2numpy import convert_from_file
+import matplotlib.pyplot as plt
+
+def normalize_images(images):
+    normalized_images = []
+    for image in images:
+        min_val = np.min(image)
+        max_val = np.max(image)
+        
+        normalized_image = (image - min_val) / (max_val - min_val)
+        normalized_images.append(normalized_image)
+    return normalized_images
 
 def get_mnist(b_random=True):
     
-    print("\no Getting MNIST datasets\n")
+    print("\n>> Getting MNIST datasets <<\n")
 
-    tot_samples = np.array(convert_from_file('MNIST/train-images.idx3-ubyte'))
-    tot_labels = np.array(convert_from_file('MNIST/train-labels.idx1-ubyte'))
-    test_samples = np.array(convert_from_file('MNIST/t10k-images.idx3-ubyte'))
+    all_images = np.array(convert_from_file('MNIST/train-images.idx3-ubyte'))
+    all_labels = np.array(convert_from_file('MNIST/train-labels.idx1-ubyte'))
+    test_images = np.array(convert_from_file('MNIST/t10k-images.idx3-ubyte'))
     test_labels = np.array(convert_from_file('MNIST/t10k-labels.idx1-ubyte'))
 
     
-    tot_samples = _normalize_set(tot_samples)
-    test_samples= _normalize_set(test_samples)
+    all_images = normalize_images(all_images)
+    test_images= normalize_images(test_images)
 
     if b_random : 
-
-        lst = [i for i in range(0,len(tot_samples))]
+        lst = [i for i in range(0,len(all_images))]
         np.random.shuffle(lst)
         for index in range(0, len(lst) - 2, 2):
-            tmp=tot_samples[index] 
-            tot_samples[index] = tot_samples[index + 1] 
-            tot_samples[index + 1] = tmp 
-            tmp=tot_labels[index] 
-            tot_labels[index] = tot_labels[index + 1] 
-            tot_labels[index + 1] = tmp 
+            tmp=all_images[index] 
+            all_images[index] = all_images[index + 1] 
+            all_images[index + 1] = tmp 
+            tmp=all_labels[index] 
+            all_labels[index] = all_labels[index + 1] 
+            all_labels[index + 1] = tmp 
 
     #the dataset has no depth, it is necessary to add the depth dimension
     sample_list, test_list = [], [] 
                                                  
-    for i in range(len(tot_samples)): sample_list.append(np.expand_dims(tot_samples[i], axis=0))
-    for i in range(len(test_samples)): test_list.append(np.expand_dims(test_samples[i], axis=0))
+    for i in range(len(all_images)): sample_list.append(np.expand_dims(all_images[i], axis=0))
+    for i in range(len(test_images)): test_list.append(np.expand_dims(test_images[i], axis=0))
 
-    tot_samples = np.array(sample_list)
-    test_samples = np.array(test_list)
+    all_images = np.array(sample_list)
+    test_images = np.array(test_list)
 
 
-    valid_num = len(test_samples)
-    train_num = len(tot_samples) - len(test_samples)
+    valid_num = len(test_images)
+    train_num = len(all_images) - len(test_images)
 
-    train_samples = np.array(tot_samples[0:train_num , : , :])
-    train_labels = np.array(tot_labels[ 0 : train_num ])
-    valid_samples = np.array(tot_samples[train_num: , : , :])
-    valid_labels = np.array(tot_labels[ train_num : ])
+    train_images = np.array(all_images[0: train_num , : , :])
+    train_labels = np.array(all_labels[ 0: train_num ])
+    valid_images = np.array(all_images[train_num: , : , :])
+    valid_labels = np.array(all_labels[train_num : ])
     
-    return (train_samples, train_labels, valid_samples, valid_labels, test_samples, test_labels)
+    return (train_images, train_labels, valid_images, valid_labels, test_images, test_labels)
+
+def plot_random_images(images, title):
+    random_indices = np.random.choice(len(images), 3, replace=False)
+
+    fig, axes = plt.subplots(1, 3, figsize=(10, 3))
+    fig.suptitle(title)
+
+    for i, ax in enumerate(axes):
+        ax.imshow(images[random_indices[i]].reshape(28, 28), cmap='gray')
+        ax.axis('off')
+
+    plt.show()
