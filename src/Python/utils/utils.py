@@ -1,6 +1,7 @@
 import numpy as np
 from idx2numpy import convert_from_file
 import matplotlib.pyplot as plt
+import os
 
 def normalize_images(images):
     normalized_images = []
@@ -16,10 +17,10 @@ def get_mnist(b_random=True):
     
     print("\n>> Getting MNIST datasets <<\n")
 
-    all_images = np.array(convert_from_file('MNIST/train-images.idx3-ubyte'))
-    all_labels = np.array(convert_from_file('MNIST/train-labels.idx1-ubyte'))
-    test_images = np.array(convert_from_file('MNIST/t10k-images.idx3-ubyte'))
-    test_labels = np.array(convert_from_file('MNIST/t10k-labels.idx1-ubyte'))
+    all_images = np.array(convert_from_file('../../MNIST/train-images.idx3-ubyte'))
+    all_labels = np.array(convert_from_file('../../MNIST/train-labels.idx1-ubyte'))
+    test_images = np.array(convert_from_file('../../MNIST/t10k-images.idx3-ubyte'))
+    test_labels = np.array(convert_from_file('../../MNIST/t10k-labels.idx1-ubyte'))
 
     
     all_images = normalize_images(all_images)
@@ -65,5 +66,7 @@ def plot_random_images(images, title):
     for i, ax in enumerate(axes):
         ax.imshow(images[random_indices[i]].reshape(28, 28), cmap='gray')
         ax.axis('off')
-
-    plt.show()
+    
+    save_dir = './..'
+    save_path = os.path.join(save_dir, f"{title.lower().replace(' ', '_')}_random_images.png")
+    plt.savefig(save_path)    
