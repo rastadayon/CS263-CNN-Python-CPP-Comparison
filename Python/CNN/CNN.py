@@ -1,3 +1,4 @@
+from .Filters import Conv2D
 
 class CNN:
     
@@ -12,11 +13,20 @@ class CNN:
     def add_conv_layer(
             self, 
             image_dim=(1, 28, 28),
-            kernels=(2, 3, 3, 1),
+            kernels=(1, 3, 3, 2),
             padding=1,
             stride=1,
             bias=0.1,
             lr=0.01
         ):
         
-        self.layers.append(Filter)
+        self.layers.append(
+            Conv2D(
+                image_dim=(1, 28, 28), # (C, H, W)
+                kernels=(1, 3, 3, 2), # (C, H_k, W_k, num_kernels)
+                padding=0,
+                stride=2,
+                bias=0.1,
+                lr=0.01
+                )
+            )
