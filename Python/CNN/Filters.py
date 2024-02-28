@@ -30,10 +30,17 @@ class Conv2D:
         '''
             Given an input image of type np.ndarray, adds padding to height and width of it 
         '''
-        height, width = image.shape
-        padded_image = np.zeros((height + 2 * self.padding, width + 2 * self.padding))
-        padded_image[self.padding:self.padding + height, self.padding:self.padding + width] = image
-        
+        if len(image.shape) == 2:  # Grayscale image
+            height, width = image.shape
+            padded_image = np.zeros((height + 2 * self.padding, width + 2 * self.padding))
+            padded_image[self.padding:self.padding + height, self.padding:self.padding + width] = image
+        elif len(image.shape) == 3:  # Color or multi-channel image
+            depth, height, width = image.shape
+            padded_image = np.zeros((depth, height + 2 * self.padding, width + 2 * self.padding))
+            padded_image[:, self.padding:self.padding + height, self.padding:self.padding + width] = image
+        else:
+            raise ValueError("Input image must be 2D (grayscale) or 3D (color/multi-channel) array.")
+
         return padded_image
     
     def out_dim(self, h_k, w_k): 
