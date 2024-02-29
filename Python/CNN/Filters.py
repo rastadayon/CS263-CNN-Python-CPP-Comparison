@@ -1,6 +1,8 @@
 import numpy as np
 from utils.activations import *
 
+np.random.seed(42)
+
 class Conv2D:
     
     def __init__(
@@ -15,16 +17,14 @@ class Conv2D:
         assert image_dim[0] == kernels[0], "Error: Image and kernel channel miss match!"
         
         self.image_dim = (image_dim[0], image_dim[1] + 2 * padding, image_dim[2] + 2 * padding)
-        self.kernels = (kernels[0], kernels[1], kernels[2])
+        self.kernel_dim = (kernels[0], kernels[1], kernels[2])
         self.num_kernels = kernels[3]
         self.padding = padding
         self.stride = stride
         self.bias = np.ones(self.num_kernels) * bias
-        self.filters = np.random.rand(*self.kernels, kernels[3])*0.1
+        self.filters = np.random.rand(self.num_kernels, *self.kernel_dim)*0.1
         self.lr = lr
-        
-        print(f'self.filters : {self.filters.shape}')
-        
+                
     
     def add_padding(self, image):
         '''
@@ -64,18 +64,21 @@ class Conv2D:
         
         self.cache=image # not sure what this does
         
-        h_k, w_k, c_k = (self.kernels)
-        h_out, w_out, c_out = self.out_dim(image)
+        c_k, h_k, w_k = (self.kernel_dim)
+        print(f'h_k: {h_k}, w_k: {w_k}, c_k: {c_k}')
+        h_out, w_out, c_out = self.out_dim(h_k, w_k)
+        print(f'out_dim: {h_out, w_out}')
         image_out = np.zeros((self.num_kernels, h_out, w_out))
         
         for filter_num in range(self.num_kernels):
             for c in range(c_k):
-                
-                for i, y in enumerate(range(self.image_dim[1] - h_k, self.stride)):
-                    for j, x in enumerate(range(self.image_dim[2] - w_k, self.stride)):
+                # print(f'c = {c}')
+                for i, y in enumerate(np.arange(0, self.image_dim[1] - h_k, self.stride)):
+                    for j, x in enumerate(np.arange(0, self.image_dim[2] - w_k, self.stride)):
+                        # print(f'{i}. y:{y}, {j}. x:{x}, ')
                         for y_k in range(h_k):
                             for x_k in range(w_k):
-                                image_out[filter_num][i][j] += image[c][y + y_k][x + x_k] * self.filters[filter_num][y_k][x_k]
+                                image_out[filter_num][i][j] += (image[c][y + y_k][x + x_k] * self.filters[filter_num][c][y_k][x_k])
         
         return leaky_relu(image_out)                        
 		

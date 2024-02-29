@@ -17,10 +17,10 @@ def get_mnist(b_random=True):
     
     print("\n>> Getting MNIST datasets <<\n")
 
-    all_images = np.array(convert_from_file('../../MNIST/train-images.idx3-ubyte'))
-    all_labels = np.array(convert_from_file('../../MNIST/train-labels.idx1-ubyte'))
-    test_images = np.array(convert_from_file('../../MNIST/t10k-images.idx3-ubyte'))
-    test_labels = np.array(convert_from_file('../../MNIST/t10k-labels.idx1-ubyte'))
+    all_images = np.array(convert_from_file('../MNIST/train-images.idx3-ubyte'))
+    all_labels = np.array(convert_from_file('../MNIST/train-labels.idx1-ubyte'))
+    test_images = np.array(convert_from_file('../MNIST/t10k-images.idx3-ubyte'))
+    test_labels = np.array(convert_from_file('../MNIST/t10k-labels.idx1-ubyte'))
 
     
     all_images = normalize_images(all_images)
