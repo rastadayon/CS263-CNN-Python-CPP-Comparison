@@ -23,8 +23,7 @@ class Conv2D:
         self.stride = stride
         self.bias = np.ones(self.num_kernels) * bias
         self.filters = np.random.rand(self.num_kernels, *self.kernel_dim)*0.1
-        self.lr = lr
-                
+        self.lr = lr            
     
     def add_padding(self, image):
         '''
@@ -82,3 +81,5 @@ class Conv2D:
         
         return leaky_relu(image_out)                        
 		
+    def backward(self, image):
+        
