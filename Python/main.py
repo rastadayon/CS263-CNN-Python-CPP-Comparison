@@ -30,5 +30,7 @@ if __name__ == '__main__':
         )
     
     out = conv.forward(image)
+    img_grad = conv.backward(out)
     print(f'out.shape: {out.shape}')
     print(out[0][:2])
+    print(f'img_grad.shape: {img_grad}')

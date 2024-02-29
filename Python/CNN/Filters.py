@@ -12,7 +12,8 @@ class Conv2D:
         padding=1,
         stride=1,
         bias=0.1,
-        lr=0.01
+        lr=0.01,
+        scheduling_lr=True
     ):
         assert image_dim[0] == kernels[0], "Error: Image and kernel channel miss match!"
         
@@ -23,7 +24,9 @@ class Conv2D:
         self.stride = stride
         self.bias = np.ones(self.num_kernels) * bias
         self.filters = np.random.rand(self.num_kernels, *self.kernel_dim)*0.1
-        self.lr = lr            
+        self.lr = lr
+        self.scheduling_lr = scheduling_lr
+        self.iteration = 0          
     
     def add_padding(self, image):
         '''
@@ -71,15 +74,52 @@ class Conv2D:
         
         for filter_num in range(self.num_kernels):
             for c in range(c_k):
-                # print(f'c = {c}')
                 for i, y in enumerate(np.arange(0, self.image_dim[1] - h_k, self.stride)):
                     for j, x in enumerate(np.arange(0, self.image_dim[2] - w_k, self.stride)):
-                        # print(f'{i}. y:{y}, {j}. x:{x}, ')
                         for y_k in range(h_k):
                             for x_k in range(w_k):
                                 image_out[filter_num][i][j] += (image[c][y + y_k][x + x_k] * self.filters[filter_num][c][y_k][x_k])
         
         return leaky_relu(image_out)                        
 		
-    def backward(self, image):
+    def gradient_decsent(self, filters_gradient, bias_gradient):
+        if self.scheduling_lr:
+            self.lr = self.lr * np.exp(-self.iteration/10000)
+        self.filters -= self.lr * filters_gradient
+        self.bias -= self.lr * bias_gradient
+        
+        self.iteration += 1
+        
+
+    def backward(self, loss):
+        '''
+            Given the loss/loss gradient of this layer of shape (c_out, h_out, w_out) returns the 
+            loss gradient of the input image of the forward pass of same shape as input image.
+            
+        '''
+        
+        loss = de_leaky_relu(loss)
+        image=self.cache
+        
+        c_k, h_k, w_k = (self.kernel_dim)
+        input_gradient = np.zeros(self.image_dim)
+        filters_gradient = np.zeros(self.filters.shape)
+        bias_gradient = []
+        
+        for filter_num in range(self.num_kernels):
+            for i, y in enumerate(np.arange(2 * self.padding, self.image_dim[1] - h_k, self.stride)):
+                for j, x in enumerate(np.arange(2 * self.padding, self.image_dim[2] - w_k, self.stride)):
+                    for c in range(c_k):
+                        for y_k in range(h_k):
+                            for x_k in range(w_k):
+                                filters_gradient[filter_num][c][y_k][x_k] = (image[c][y + y_k][x + x_k] * loss[filter_num][i][j])
+                                input_gradient[c][y + y_k][x + x_k] += (loss[filter_num][i][j] * self.filters[filter_num][c][y_k][x_k])
+        
+            bias_gradient.append(np.sum(loss[filter_num]))
+        
+        bias_gradient = np.array(bias_gradient)
+        self.gradient_decsent(filters_gradient, bias_gradient)
+        
+        return input_gradient
+        
         
