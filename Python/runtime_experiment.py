@@ -60,6 +60,9 @@ if __name__ == "__main__":
                         kernel_size=kernel_size,
                         num_layers=num_layers
                     )
+    total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f'Number of parameters: {total_params}')
+
     
     optimizer = optimizer(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     model = model.to(device)
