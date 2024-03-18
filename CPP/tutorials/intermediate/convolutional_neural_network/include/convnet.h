@@ -10,22 +10,23 @@ class ConvNetBaseImpl : public torch::nn::Module {
 
  private:
     int64_t kernel_size;
+    int64_t pad;
     torch::nn::Sequential layer1{
-        torch::nn::Conv2d(torch::nn::Conv2dOptions(3, 16, kernel_size).stride(1).padding(2)),
+        torch::nn::Conv2d(torch::nn::Conv2dOptions(3, 16, kernel_size).stride(1).padding(pad)),
         torch::nn::BatchNorm2d(16),
         torch::nn::ReLU(),
         torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2))
     };
 
     torch::nn::Sequential layer2{
-        torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 32, kernel_size).stride(1).padding(2)),
+        torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 32, kernel_size).stride(1).padding(pad)),
         torch::nn::BatchNorm2d(32),
         torch::nn::ReLU(),
         torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2))
     };
 
     torch::nn::Sequential layer3{
-        torch::nn::Conv2d(torch::nn::Conv2dOptions(32, 64, kernel_size).stride(1).padding(2)),
+        torch::nn::Conv2d(torch::nn::Conv2dOptions(32, 64, kernel_size).stride(1).padding(pad)),
         torch::nn::BatchNorm2d(64),
         torch::nn::ReLU(),
         torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2))

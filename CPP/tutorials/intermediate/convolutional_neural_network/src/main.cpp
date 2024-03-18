@@ -68,6 +68,7 @@ int main(int argc, char* argv []) {
 
     if (num_layers == 3) {
         // Train the model
+        std::cerr<<"HERE"<<std::endl;
         double total_training_time = 0.0;
         double total_testing_time = 0.0;
         for (int i = 0; i != 10; ++i) {
@@ -95,16 +96,17 @@ int main(int argc, char* argv []) {
                 for (auto& batch : *train_loader) {
                     // Transfer images and target labels to device
                     auto data = batch.data.to(device);
+                    // std::cerr<<"HERE1"<<std::endl;
                     auto target = batch.target.to(device);
-
+                    // std::cerr<<"HERE2"<<std::endl;
                     auto output = model->forward(data);
-
+                    // std::cerr<<"HERE3"<<std::endl;
                     auto loss = torch::nn::functional::cross_entropy(output, target);
-
+                    // std::cerr<<"HERE4"<<std::endl;
                     running_loss += loss.item<double>() * data.size(0);
-
+                    // std::cerr<<"HERE5"<<std::endl;
                     auto prediction = output.argmax(1);
-
+                    // std::cerr<<"HERE6"<<std::endl;
                     num_correct += prediction.eq(target).sum().item<int64_t>();
 
                     optimizer->zero_grad();

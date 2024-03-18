@@ -53,22 +53,22 @@ if __name__ == "__main__":
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
     
-    model = ConvNet(
-                        input_channels=3,
-                        num_classes=10,
-                        channel_size=16,
-                        kernel_size=kernel_size,
-                        num_layers=num_layers
-                    )
-    total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f'Number of parameters: {total_params}')
 
     
-    optimizer = optimizer(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-    model = model.to(device)
     
     total_training_time, total_testing_time = 0, 0
     for i in range(times_run):
+        model = ConvNet(
+                            input_channels=3,
+                            num_classes=10,
+                            channel_size=16,
+                            kernel_size=kernel_size,
+                            num_layers=num_layers
+                        )
+        optimizer = optimizer(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+        model = model.to(device)
+        total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        print(f'Number of parameters: {total_params}')
         print(f'ROUND {i + 1} / {times_run}')
         print(f'\tStarting Training...')
         training_start_time = time.time()
