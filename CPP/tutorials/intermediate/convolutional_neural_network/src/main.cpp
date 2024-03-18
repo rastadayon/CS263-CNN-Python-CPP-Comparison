@@ -67,25 +67,25 @@ int main(int argc, char* argv []) {
     std::cout << std::fixed << std::setprecision(4);
 
     if (num_layers == 3) {
-        auto model = ConvNetBase(num_classes, kernel_size);
-        std::unique_ptr<torch::optim::Optimizer> optimizer;
-        if (optimizer_name == "SGD") {
-            optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
-                torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
-        } else if (optimizer_name == "Adam") {
-            optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
-                torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
-        } else {
-            std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
-            return 1;
-        }
-        std::cout << "Optimizer Done!" << std::endl;
-        std::cout << "Training...\n";
         // Train the model
         double total_training_time = 0.0;
         double total_testing_time = 0.0;
         for (int i = 0; i != 10; ++i) {
-            std::cout << "Round: " << i << std::endl;
+            auto model = ConvNetBase(num_classes, kernel_size);
+            std::unique_ptr<torch::optim::Optimizer> optimizer;
+            if (optimizer_name == "SGD") {
+                optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
+                    torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
+            } else if (optimizer_name == "Adam") {
+                optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
+                    torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
+            } else {
+                std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
+                return 1;
+            }
+            std::cout << "Optimizer Done!" << std::endl;
+            std::cout << "Training...\n";
+            std::cout << "Round: " << i + 1 << std::endl;
             auto training_start = std::chrono::high_resolution_clock::now();
             for (size_t epoch = 0; epoch != num_epochs; ++epoch) {
                 double running_loss = 0.0;
@@ -161,25 +161,25 @@ int main(int argc, char* argv []) {
                 std::cout << " sec" <<  std::endl;
     } 
     else if (num_layers == 4) {
-        auto model = ConvNet4Layer(num_classes, kernel_size);
-        std::unique_ptr<torch::optim::Optimizer> optimizer;
-        if (optimizer_name == "SGD") {
-            optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
-                torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
-        } else if (optimizer_name == "Adam") {
-            optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
-                torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
-        } else {
-            std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
-            return 1;
-        }
-        std::cout << "Optimizer Done!" << std::endl;
-        std::cout << "Training...\n";
         // Train the model
         double total_training_time = 0.0;
         double total_testing_time = 0.0;
         for (int i = 0; i != 10; ++i) {
-            std::cout << "Round: " << i << std::endl;
+            auto model = ConvNet4Layer(num_classes, kernel_size);
+            std::unique_ptr<torch::optim::Optimizer> optimizer;
+            if (optimizer_name == "SGD") {
+                optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
+                    torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
+            } else if (optimizer_name == "Adam") {
+                optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
+                    torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
+            } else {
+                std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
+                return 1;
+            }
+            std::cout << "Optimizer Done!" << std::endl;
+            std::cout << "Training...\n";
+            std::cout << "Round: " << i + 1 << std::endl;
             auto training_start = std::chrono::high_resolution_clock::now();
             for (size_t epoch = 0; epoch != num_epochs; ++epoch) {
                 double running_loss = 0.0;
@@ -255,25 +255,25 @@ int main(int argc, char* argv []) {
                 std::cout << " sec" <<  std::endl;
     }
     else if (num_layers == 5) {
-        auto model = ConvNet5Layer(num_classes, kernel_size);
-        std::unique_ptr<torch::optim::Optimizer> optimizer;
-        if (optimizer_name == "SGD") {
-            optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
-                torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
-        } else if (optimizer_name == "Adam") {
-            optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
-                torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
-        } else {
-            std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
-            return 1;
-        }
-        std::cout << "Optimizer Done!" << std::endl;
-        std::cout << "Training...\n";
         // Train the model
         double total_training_time = 0.0;
         double total_testing_time = 0.0;
         for (int i = 0; i != 10; ++i) {
-            std::cout << "Round: " << i << std::endl;
+            auto model = ConvNet5Layer(num_classes, kernel_size);
+            std::unique_ptr<torch::optim::Optimizer> optimizer;
+            if (optimizer_name == "SGD") {
+                optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
+                    torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
+            } else if (optimizer_name == "Adam") {
+                optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
+                    torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
+            } else {
+                std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
+                return 1;
+            }
+            std::cout << "Optimizer Done!" << std::endl;
+            std::cout << "Training...\n";
+            std::cout << "Round: " << i + 1 << std::endl;
             auto training_start = std::chrono::high_resolution_clock::now();
             for (size_t epoch = 0; epoch != num_epochs; ++epoch) {
                 double running_loss = 0.0;
@@ -350,25 +350,25 @@ int main(int argc, char* argv []) {
 
     } 
     else if (num_layers == 6) {
-        auto model = ConvNet6Layer(num_classes, kernel_size);
-        std::unique_ptr<torch::optim::Optimizer> optimizer;
-        if (optimizer_name == "SGD") {
-            optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
-                torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
-        } else if (optimizer_name == "Adam") {
-            optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
-                torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
-        } else {
-            std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
-            return 1;
-        }
-        std::cout << "Optimizer Done!" << std::endl;
-        std::cout << "Training...\n";
         // Train the model
         double total_training_time = 0.0;
         double total_testing_time = 0.0;
         for (int i = 0; i != 10; ++i) {
-            std::cout << "Round: " << i << std::endl;
+            auto model = ConvNet6Layer(num_classes, kernel_size);
+            std::unique_ptr<torch::optim::Optimizer> optimizer;
+            if (optimizer_name == "SGD") {
+                optimizer = std::make_unique<torch::optim::SGD>(model->parameters(),
+                    torch::optim::SGDOptions(learning_rate).weight_decay(weight_decay));
+            } else if (optimizer_name == "Adam") {
+                optimizer = std::make_unique<torch::optim::Adam>(model->parameters(), 
+                    torch::optim::AdamOptions(learning_rate).weight_decay(weight_decay));
+            } else {
+                std::cerr << "Invalid optimizer name: " << optimizer_name << std::endl;
+                return 1;
+            }
+            std::cout << "Optimizer Done!" << std::endl;
+            std::cout << "Training...\n";
+            std::cout << "Round: " << i + 1 << std::endl;
             auto training_start = std::chrono::high_resolution_clock::now();
             for (size_t epoch = 0; epoch != num_epochs; ++epoch) {
                 double running_loss = 0.0;
