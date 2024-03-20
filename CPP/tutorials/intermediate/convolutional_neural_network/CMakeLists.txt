@@ -4,8 +4,8 @@ project(convolutional-neural-network VERSION 1.0.0 LANGUAGES CXX)
 
 # Add the profiling flags to both the compiler and linker flags
 set(EXECUTABLE_NAME convolutional-neural-network)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g")
 
 add_executable(${EXECUTABLE_NAME})
 target_sources(${EXECUTABLE_NAME} PRIVATE src/main.cpp
